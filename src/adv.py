@@ -1,4 +1,8 @@
+import textwrap
 from room import Room
+import os
+
+# os.system('cls')
 
 # Declare all the rooms
 
@@ -38,14 +42,44 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
+player = Player('Mathias', room = room['outside'])
+
+done = False
+
+def print_help_text():
+    print('available commands are n, e, s, w')
 
 # Write a loop that:
-#
+while not done:
+
 # * Prints the current room name
+print(player.location)
 # * Prints the current description (the textwrap module might be useful here).
+for line in textwrap.wrap(player.location.print_description()):
+    print(line)
 # * Waits for user input and decides what to do.
-#
+command = input('Oi traveller ')
+
+# check that the command is properly formatted
+if len(command) > 2 or len(command) < 1:
+    print('\n invalid command\n')
+    continue
+
+if command in ['n', 's', 'e', 'w']:
+    player.location = player.move_to(command, player.location)
+    continue
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+if command in ['q', 'quit', 'exit']:
+    done = True
+
+if command in ['?', 'help']:
+    print_help_text()
+    continue
+
+else:
+    print('\n invalid command\n')
+    continue
